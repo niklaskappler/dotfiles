@@ -1,0 +1,64 @@
+#! /usr/bin/env bash
+# https://gitlab.com/Ma27/cli-helpers/-/tree/master
+set -o pipefail
+
+error() {
+  echo >&2 -e "\e[31m${1:-Unknown error}\e[0m"
+  exit 1
+}
+
+check_dep() {
+  dep="$(command -v "${1}" 2>/dev/null)"
+  [ $? -eq 0 ] || { error "Please ensure that ${1} is installed in your PATH!"; exit 1; }
+
+  echo "$dep"
+}
+
+set -e
+iwgetid_exec=$(check_dep iwgetid)
+curl_exec="${CLI_HELPERS_CURL:-$(check_dep curl)}"
+perl_exec=$(check_dep perl)
+jq_exec=$(check_dep jq)
+set +e
+
+interface="${1:-wlan0}"
+if [[ "$interface" =~ ^(-h|--help) ]]; then
+  exec man wifionice-status
+fi
+
+limit="${TIMEOUT:+-m $TIMEOUT}"
+curl_cmd="$curl_exec --interface $interface --dns-interface $interface --dns-servers 172.18.0.1 --silent $limit"
+tmp_file="${XDG_RUNTIME_DIR:-/tmp}/wifionice-cache"
+
+# Block only renders content when being logged into WIFIonICE or WIFI@DB (the latter is the
+# relacement for the first).
+if [[ "$("$iwgetid_exec" "$interface" -r)" =~ ^(WIFI(@DB|onICE))$ ]]; then
+  quota_raw=$($curl_cmd http://wifionice.de/usage_info/)
+
+  # If wifionice.de isn't reachable, don't try it further and clear cache
+  [ $? -ne 0 ] && { echo "n/a wifionice"; rm -f "$tmp_file"; exit 0; }
+  quota=$("$perl_exec" -E "say int(100 - ${quota_raw:-0} * 100)")
+
+  # `iceportal.de` is redirected to bahn.de -> we are in an IC with WIFIonICE
+  if { $curl_cmd https://iceportal.de/ | grep http-equiv=\"refresh | grep -q bahn.de; }; then
+    out="IC unk. ($quota% vol.)"
+  else
+    # Identification Number of the ICE
+    train_nr=$($curl_cmd https://iceportal.de/api1/rs/tripInfo/trip \
+      | "$jq_exec" '.trip.vzn' | xargs echo)
+
+    [ $? -ne 0 ] && { { [ -f "$tmp_file" ] && echo "  $(<"$tmp_file")"; }; exit 0; }
+
+    # Train's speed
+    train_speed=$($curl_cmd https://iceportal.de/api1/rs/status \
+      | "$jq_exec" '.speed')
+
+    [ "$train_speed" -eq 0 ] && train_speed="unknown"
+    [ -z "$train_nr" ] && train_nr="unknown"
+
+    out="ICE $train_nr - $train_speed km/h ($quota% vol.)"
+  fi
+
+  echo "$out" >"$tmp_file"
+  echo "  $out"
+fi

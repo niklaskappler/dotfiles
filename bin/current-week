@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Get current week
+printf "Current calendar week: $(date +%V)\n"

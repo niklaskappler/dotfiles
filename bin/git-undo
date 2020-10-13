@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Undo your last commit  (in current folder), but don't throw away your changes
+git reset --soft HEAD^

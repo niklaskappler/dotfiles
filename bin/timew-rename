@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# timew-rename
+#
+# A quick helper script to rename a tag.
+
+OLD_TAG="$1"
+NEW_TAG="$2"
+
+if ! [ -n "$OLD_TAG" ]; then
+  printf "Old tag not given.\n"
+fi
+
+if ! [ -n "$NEW_TAG" ]; then
+  printf "New tag not given.\n"
+fi
+
+idList=$(timew summary 1970W01 - now "$OLD_TAG" :ids | gsed -nr 's/.* (@[0-9]+) .*/\1/p')
+
+timew tag $idList "$NEW_TAG"
+timew untag $idList "$OLD_TAG"

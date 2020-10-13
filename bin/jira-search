@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+version='0.0.1'
+
+CONFIG_DIR="${HOME}/.config/daily-scripts/jira-search"
+tmp_dir=$(dirname "$(mktemp -u)")
+
+bold='\033[1m'
+clear='\033[0m'
+
+function jira_version() {
+  echo "cloud-helpers v${version}"
+}
+
+function enshure_environment() {
+  if [ ! -f "$CONFIG_DIR/.env" ]; then
+    echo "daily-scripts jira-serach .env file not found.."
+  else
+    source "$CONFIG_DIR/.env"
+  fi
+}
+
+function search() {
+    # --------
+    # Open
+    # --------
+    if [[ -z $OPEN_PARAM ]]; then
+      echo " Usage: jira open [search_term] " >&2
+      exit 1
+    fi
+
+    if [[ "$OSTYPE" == "linux-gnu" ]]; then
+            # ...
+            xdg-open "$JIRA_PATH/browse/$OPEN_PARAM"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+            # Mac OSX
+            open "$JIRA_PATH/browse/$OPEN_PARAM"
+    else
+      # unknown
+      echo " OS is currently not supported, you should think about using a proper OS 🍏" >&2
+      exit 1
+    fi
+}
+
+function main() {
+  enshure_environment
+   if [[ $# -eq 0 ]]; then
+  echo "Please provide an action" >&2
+    exit 1
+  else
+    COMMAND=$1
+  fi
+
+  if [[ $COMMAND == "search" ]] || [[ $COMMAND == "s" ]]; then
+      OPEN_PARAM="$2"
+      search $2
+  fi
+}
+
+main ${1} ${2}

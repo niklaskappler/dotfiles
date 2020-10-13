@@ -1,0 +1,9 @@
+#!/bin/bash
+#xflock4
+
+#dm-tool lock
+# Inspiration: https://gitlab.com/LukeLR/scripts/-/blob/master/brightness/screen-off.sh
+sleep 1
+xset dpms force off
+
+#xflock4

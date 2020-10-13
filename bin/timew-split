@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# battery-status
+#
+# A quick little indicator for battery status on your Mac laptop, suitable for
+# display in your prompt.
+
+ID="$1"
+DATE="$2"
+
+if ! [ -n "$ID" ]; then
+  printf "Id not given.\n"
+fi
+
+incrementTrailingNumber() {
+  local prefix number
+  if [[ $1 =~ ^(.*[^[:digit:]])([[:digit:]]+)$ ]]; then
+    prefix=${BASH_REMATCH[1]}
+    number=${BASH_REMATCH[2]}
+    printf '%s%s\n' "$prefix" "$(( number + 1 ))"
+  else
+    printf '%s\n' "$1"
+  fi
+}
+
+timew split $ID
+if ! timew modify end $(incrementTrailingNumber $ID) $DATE &>/dev/null; then
+    timew modify start $ID $DATE
+    timew modify end $(incrementTrailingNumber $ID) $DATE
+else
+  timew modify start $ID $DATE
+fi
+

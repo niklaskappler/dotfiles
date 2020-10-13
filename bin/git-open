@@ -1,0 +1,36 @@
+#!/bin/bash
+set +x
+
+# Opens the current github repository in the default browser
+
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  echo "Not a git repository." 1>&2
+  exit 1
+fi
+
+remotes=$(git remote -v)
+if [[ -z "$remotes" ]]; then
+  echo "No remote found. Did you pushed your repo to Github, Gitlab etc.." 1>&2
+  exit 1
+fi
+
+repolink=$(git remote get-url origin)
+if [[ $repolink == *"git@github.com:"* ]]; then
+  repolink="${repolink/git@github.com:/https://github.com/}"
+elif [[ $repolink == *"git@gitlab.com:"* ]]; then
+  repolink="${$repolink/git@gitlab.com:/https://gitlab.com/}"
+elif [[ $repolink == *"git@bitbucket.com:"* ]]; then
+  repolink="${$repolink/git@bitbucket.com:/https://bitbucket.com/}"
+fi
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  # ...
+  xdg-open "$repolink"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  # Mac OSX
+  open "$repolink"
+else
+  # unknown
+  echo " OS is currently not supported, you should think about using a proper OS 🍏" >&2
+  exit 1
+fi
