@@ -1,0 +1,13 @@
+[user]
+	name = Niklas Kappler
+	email = mail@niklas-kappler.de
+
+[github]
+  user = niklaskappler
+
+[core]
+	excludesfile = ~/.gitignore_global
+  editor = nano
+
+[commit]
+	template = ~/.gitmessage

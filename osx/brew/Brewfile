@@ -1,0 +1,40 @@
+##########################################
+# Config
+##########################################
+cask_args appdir: "/Applications"
+
+##########################################
+# Tap
+##########################################
+tap "homebrew/cask"
+
+##########################################
+# Mac apps
+##########################################
+cask "gpg-suite"
+cask "slack"
+cask "zoomus"
+cask "joplin"
+cask "spotify"
+
+##########################################
+# Dev stuff
+##########################################
+cask "docker"
+cask "iterm2"
+brew "stow"
+
+##########################################
+# Cli stuff
+##########################################
+brew "awscli"
+brew "jq"
+brew "tfenv"
+brew "terraform"
+brew "nvm"
+brew "timewarrior"
+brew "autojump"
+brew "ffmpeg"
+brew "openjdk"
+brew "mitmproxy"
+
