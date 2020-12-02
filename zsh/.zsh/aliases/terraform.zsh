@@ -1,0 +1,2 @@
+# terraform
+alias tf=terraform

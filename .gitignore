@@ -152,3 +152,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### Custom
+
+zsh/.zsh/custom/*

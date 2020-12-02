@@ -9,7 +9,7 @@ if test ! $(which brew); then
 fi
 
 echo "📲 Installing homebrew/app store packages..."
-sh $CONFIG_DIR/osx/brew/brew_setup.sh
+# sh $CONFIG_DIR/osx/brew/brew_setup.sh
 echo "✅ Successful installed packages"
 
 echo "📁 Creating projects directory..."
