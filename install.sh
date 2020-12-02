@@ -35,12 +35,3 @@ echo "⚡️ All right! Restart your machine to complete the configuration."
 #echo "🖥 Setting apps to Mac dock..."
 #sh $CONFIG_DIR/osx/dock/setup.sh
 #echo "✅ Successful set apps to Mac dock"
-
-#
-#
-#
-#cp ./config/test.zshrc ${HOME}/test.zshrc
-#
-#rm -rf ~/.zshrc
-#echo "[ -f ~/test.zshrc ] && source ~/test.zshrc" >> ~/.zshrc
-#
