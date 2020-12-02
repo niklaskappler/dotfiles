@@ -40,7 +40,7 @@ function search() {
             open "$JIRA_PATH/browse/$OPEN_PARAM"
     else
       # unknown
-      echo " OS is currently not supported, you should think about using a proper OS 🍏" >&2
+      echo " OS is currently not supported, you shochuld think about using a proper OS 🍏" >&2
       exit 1
     fi
 }
