@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+#
+# zoomy - A zoom channel manager for your cli.
+# (c) 2020 by Niklas Kappler <mail@niklas-kappler.de>
+
+ID=""
+PW=""
+URL_PATH=""
+CONFIG_FILE="${HOME}/.config/daily-scripts/zoomy/config.json"
+
+# Check if param was passed
+if [[ -z $1 ]]; then
+  echo "Please call with a valid channel id." >&2
+  exit 1
+fi
+
+# Check if config was there
+if [ ! -f "$CONFIG_FILE" ]; then
+  echo "zoomy .env file not found..\n"
+  echo "Please create a file at ${CONFIG_FILE} and use following example content."
+  echo ''
+  echo 'Default config:'
+  echo '{'
+  echo '  "channels": ['
+  echo '    "id": {'
+  echo '      "id": "cannel-id",'
+  echo '      "password": "optional-password",'
+  echo '    }'
+  echo '  ]'
+  echo '}'
+  exit 1
+fi
+
+CHANNELS="$(jq -r 'keys | .[]' $CONFIG_FILE)"
+
+# Check if param is in config
+if [[ $CHANNELS == *"$1"* ]]; then
+  ID=$(jq -r ".${1}.id" $CONFIG_FILE)
+  PW=$(jq -r ".${1}.pwd" $CONFIG_FILE)
+fi
+
+# Check if channel ID could be read
+if [[ -z $ID ]] || [[ $ID =~ "null" ]]; then
+  echo "Channel not found in config. Use passed param as channel id."
+  ID=$1
+fi
+
+# Check if password was set in config
+if [[ -z $PW ]] || [[ $PW =~ "null" ]]; then
+  URL_PATH="join?confno=${ID}&pwd=${PW}"
+else
+  URL_PATH="join?confno=${ID}&pwd=${PW}"
+fi
+
+URL="zoommtg://zoom.us/${URL_PATH}"
+
+# Open channel dependent on os type
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  xdg-open $URL
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  open $URL
+else
+  echo "OS is currently not supported." >&2
+  exit 1
+fi

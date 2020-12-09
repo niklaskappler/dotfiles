@@ -24,10 +24,11 @@ sh ~/.dotfiles/install.sh
 Restart your computer and enjoy your new configuration.! ✌🏻
 
 ### ToDo's:
-- create zoom link manager
+-
 
 ### Inspiried by:
 - https://github.com/toolmantim/dotfiles
 - https://github.com/helderburato/dotfiles/blob/main/install.sh
 - https://jogendra.dev/i-do-dotfiles
 - https://github.com/xero/dotfiles
+- https://github.com/andyatkinson/dotfiles
