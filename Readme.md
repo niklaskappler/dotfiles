@@ -25,7 +25,7 @@ sh ./dotfiles/install.sh
 ```
 Restart your computer and enjoy your new configuration! ✌🏻
 
-## Inspiried by:
+## Inspired by:
 - https://github.com/helderburato/dotfiles
 - https://github.com/toolmantim/dotfiles
 - https://jogendra.dev/i-do-dotfiles
