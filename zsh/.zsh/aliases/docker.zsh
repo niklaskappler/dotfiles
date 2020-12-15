@@ -10,3 +10,5 @@ alias docker-rm='docker rm $(docker ps -a -q)'
 alias docker-container-ip='docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
 # Shows docker stats
 alias docker-stats='sudo docker ps -q | xargs  docker stats --no-stream'
+# Remove all docker volumes
+alias docker-rm-volumes='docker volume rm $(docker volume ls -q)'
