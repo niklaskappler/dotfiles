@@ -1,6 +1,7 @@
 [user]
 	name = Niklas Kappler
 	email = mail@niklas-kappler.de
+	signingKey = 9E0D5D04
 
 [github]
   user = niklaskappler
@@ -11,3 +12,6 @@
 
 [commit]
 	template = ~/.gitmessage
+	gpgSign = true
+[tag]
+	gpgSign = true
