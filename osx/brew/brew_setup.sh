@@ -9,7 +9,7 @@ brew update
 brew upgrade
 
 # it will install all from Brewfile
-brew bundle install
+brew bundle install --file $(dirname "$0")/Brewfile
 
 # Remove outdated versions from the cellar
 brew cleanup

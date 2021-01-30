@@ -16,25 +16,35 @@ cask "slack"
 cask "zoomus"
 cask "joplin"
 cask "spotify"
-
-##########################################
-# Dev stuff
-##########################################
-cask "docker"
-cask "iterm2"
-brew "stow"
+cask "rectangle"
 
 ##########################################
 # Cli stuff
 ##########################################
-brew "awscli"
 brew "jq"
-brew "tfenv"
-brew "terraform"
-brew "nvm"
 brew "timewarrior"
 brew "autojump"
 brew "ffmpeg"
-brew "openjdk"
-brew "mitmproxy"
+brew "qrencode"
 
+##########################################
+# Dev stuff GUI
+##########################################
+cask "docker"
+cask "visual-studio-code"
+
+##########################################
+# Dev stuff CLI
+##########################################
+cask "iterm2"
+brew "stow"
+brew "nvm"
+
+##########################################
+# Work stuff
+##########################################
+# brew "awscli"
+# brew "tfenv"
+# brew "terraform"
+# brew "openjdk"
+# brew "mitmproxy"
