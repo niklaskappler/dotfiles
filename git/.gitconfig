@@ -8,12 +8,14 @@
 
 [core]
 	excludesfile = ~/.gitignore_global
-  editor = nano
+    editor = nano
 
 [commit]
 	template = ~/.gitmessage
 	gpgSign = true
+
 [tag]
 	gpgSign = true
+
 [init]
 	defaultBranch = main
