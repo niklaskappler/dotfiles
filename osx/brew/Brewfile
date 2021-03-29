@@ -8,43 +8,79 @@ cask_args appdir: "/Applications"
 ##########################################
 tap "homebrew/cask"
 
-##########################################
-# Mac apps
-##########################################
-cask "gpg-suite"
-cask "slack"
-cask "zoomus"
-cask "joplin"
-cask "spotify"
-cask "rectangle"
+
 
 ##########################################
-# Cli stuff
+# Essential Cli
 ##########################################
 brew "jq"
-brew "timewarrior"
 brew "autojump"
-brew "ffmpeg"
 brew "qrencode"
 
 ##########################################
-# Dev stuff GUI
+# Essential GUI
 ##########################################
-cask "docker"
-cask "visual-studio-code"
+cask "gpg-suite"
+cask "joplin"
+cask "rectangle"
+cask "flycut"
+cask "iterm2"
+cask "nextcloud"
+cask "the-unarchiver"
+cask "appcleaner"
+cask "veracrypt"
+cask "google-chrome"
+cask "spotify"
+cask "macpass"
+cask "osxfuse"
 
 ##########################################
 # Dev stuff CLI
 ##########################################
-cask "iterm2"
 brew "stow"
 brew "nvm"
 
 ##########################################
-# Work stuff
+# Dev stuff GUI
 ##########################################
-# brew "awscli"
-# brew "tfenv"
-# brew "terraform"
-# brew "openjdk"
-# brew "mitmproxy"
+cask "jetbrains-toolbox"
+cask "visual-studio-code"
+cask "docker"
+cask "postman"
+cask "keybase"
+
+
+##########################################
+# Work CLI
+##########################################
+brew "awscli"
+brew "tfenv"
+brew "terraform"
+brew "openjdk"
+brew "mitmproxy"
+brew "timewarrior"
+
+##########################################
+# Work GUI
+##########################################
+cask "firefox"
+cask "firefox-developer-edition"
+cask "microsoft-edge"
+cask "microsoft-edge-beta"
+cask "safari-technology-preview"
+cask "slack"
+cask "zoomus"
+# cask "abstract"
+# cask "zeplin"
+
+
+##########################################
+# Optional
+##########################################
+# cask "adobe-creative-cloud"
+# cask "wireshark"
+# cask "owasp-zap"
+# cask "home-assistant"
+# brew "pock"
+
+
