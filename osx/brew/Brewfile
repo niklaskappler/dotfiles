@@ -64,12 +64,12 @@ brew "timewarrior"
 # Work GUI
 ##########################################
 cask "firefox"
-cask "firefox-developer-edition"
+#cask "firefox-developer-edition"
 cask "microsoft-edge"
-cask "microsoft-edge-beta"
-cask "safari-technology-preview"
+#cask "microsoft-edge-beta"
+#cask "safari-technology-preview"
 cask "slack"
-cask "zoomus"
+cask "zoom"
 # cask "abstract"
 # cask "zeplin"
 
