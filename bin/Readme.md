@@ -3,6 +3,7 @@
 
 ### Scripts
 
+- `activetask` - A little script for showing a shorthand way of current timewarrior tracking.
 - `battery-status`
 - `container-ip`
 - `current-week`
