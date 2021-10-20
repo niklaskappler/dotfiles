@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# converts mov like from quicktime to gifs
+#
+# Originally from https://gist.github.com/SheldonWangRJT/8d3f44a35c8d1386a396b9b49b43c385
+function rename_video_to_gif() {
+  ffmpeg -i $1 -filter_complex "[0:v] fps=12,scale=1080:-1" $2.gif
+  gifsicle -O3 $2.gif -o $2.gif
+  osascript -e "display notification \"$2.gif successfully converted and saved\" with title \"MOV2GIF SUCCESS!\""
+}
+
+rename_video_to_gif ${1} ${2}

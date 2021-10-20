@@ -10,6 +10,7 @@
 - `git-open`
 - `git-undo`
 - `jira-search`
+- `mov2gif` - Converts a mov video to a GIF file. 
 - `port-info`
 - `speedtest`
 - `timew-rename`
