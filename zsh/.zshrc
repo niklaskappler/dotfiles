@@ -74,12 +74,15 @@ ZSH_THEME="xxf"
 plugins=(
     git
     autojump
-    aws
+    zsh-autosuggestions
     iterm2
-    osx
+    aws
+    macos
     kubectl
     docker
     docker-compose
+    github
+    mvn
 )
 
 source $ZSH/oh-my-zsh.sh
