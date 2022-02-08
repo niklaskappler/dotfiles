@@ -11,7 +11,7 @@
     editor = nano
 
 [commit]
-	template = ~/.gitmessage
+; 	template = ~/.gitmessage
 	gpgSign = true
 
 [tag]
