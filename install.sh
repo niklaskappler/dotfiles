@@ -12,6 +12,11 @@ echo "📲 Installing homebrew/app store packages..."
 sh $CONFIG_DIR/osx/brew/brew_setup.sh
 echo "✅ Successful installed packages"
 
+echo "📲 Installing oh-my-zsh package..."
+sh $CONFIG_DIR/osx/brew/install-oh-my-zsh.sh
+sh $CONFIG_DIR/osx/brew/install-omz-plugins.sh
+echo "✅ Successful installed oh-my-zsh"
+
 echo "📁 Creating projects directory..."
 sh $CONFIG_DIR/osx/create_projects.sh
 echo "✅ Successful created projects directory"
