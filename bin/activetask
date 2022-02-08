@@ -5,7 +5,7 @@
 # Simple bash script to display the active task in timewarrior.
 # Source: https://github.com/auderer/activetask/blob/master/activetask
 
-task=$(timew | awk -F'"' '$0=$2')
+task=$(timew | awk '/Tracking/{print $NF}' | tr -d '"')
 time=$(timew | awk '/Total/{print $NF}')
 
 echo "\"$task\"" "⏱ " "$time"
