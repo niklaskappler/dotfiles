@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Know what process is running on a given port. Tested in macOS
+GITHUB_USERNAME="$1"
+
+if ! [ -n "$GITHUB_USERNAME" ]; then
+  printf "No github username specified.\n"
+fi
+
+curl https://github.com/$GITHUB_USERNAME.gpg | gpg --import

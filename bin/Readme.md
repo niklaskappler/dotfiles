@@ -9,6 +9,7 @@
 - `current-week`
 - `git-open`
 - `git-undo`
+- `import-github-pgp`
 - `jira-search`
 - `mov2gif` - Converts a mov video to a GIF file. 
 - `port-info`
