@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#
+# live-pr-descr --host "https://jira.host.com" --project OL --cookie <jira cookie> --github_token="$(gh auth token)"
+
+import json
+
+import click
+import requests
+from pick import pick
+
+
+def extract_org_repo(url):
+    return "/".join(url.split('/')[3:5])
+
+
+def extract_pull_number(url):
+    return url.split('/')[-1]
+
+
+@click.command()
+@click.option('--release', default='', help='Was ist der release tag?')
+@click.option('--project', default='', help='Der Project Key?')
+@click.option('--host', default='', help='Der Host path deiner Jira Instanz?')
+@click.option('--cookie', default='', help='Der Wert deinses JSESSIONID Cookies?')
+@click.option('--github_token', default='', help='Der github access token for api.')
+def release(release, project, host, cookie, github_token):
+    cookies = {'JSESSIONID': cookie}
+    response = requests.get(host + '/rest/api/2/project/' + project + '/versions',
+                            cookies=cookies)
+
+    response = json.loads(response.text)
+    non_released_versions = [x for x in response if x['released'] == False]
+    release_names = [obj['name'] for obj in non_released_versions]
+    release_name, index = pick(release_names, 'Select the release: ')
+
+    search_query = {'jql': f'fixVersion={release_name}', 'maxResults': 1000, 'startAt': 0}
+    issues_per_version_response = requests.post(host + "/rest/api/2/search",
+                                                json=search_query, cookies=cookies)
+    issues_per_version = json.loads(issues_per_version_response.text)
+    issues = [obj['key'] for obj in issues_per_version['issues']]
+
+    print("Here you go, here's the description for you live release 🚀")
+    print("--" * 25 + "\n")
+    print(f"Release: [{release_name}]({host}/projects/OL/versions/28526)\n")
+    print(f"Contains:")
+
+    for key in issues:
+        print(f"\n- [{key}]({host}/browse/{key})")
+
+        issue = [obj for obj in issues_per_version['issues'] if obj['key'] == key]
+        url = f"{host}/rest/dev-status/1.0/issue/detail?issueId={issue[0]['id']}" \
+              f"&applicationType=githube&dataType=pullrequest"
+        jira_github_prs_response = requests.get(url, cookies=cookies)
+        jira_github_prs = json.loads(jira_github_prs_response.text)
+
+        for pr in jira_github_prs['detail'][0]['pullRequests']:
+            if "bp.infra.deployment" not in pr['url']:
+                github_headers = {'Authorization': f'Bearer {github_token}', 'Accept': 'application/vnd.github+json'}
+                url = f"https://api.github.com/repos/{extract_org_repo(pr['url'])}/pulls/{extract_pull_number(pr['url'])}"
+                github_pr_details_response = requests.get(url, headers=github_headers)
+                github_pr_details = json.loads(github_pr_details_response.text)
+                merge_commit_sha = github_pr_details['merge_commit_sha']
+
+                url = f"https://api.github.com/repos/{extract_org_repo(pr['url'])}/tags"
+                repo_tags_response = requests.get(url, headers=github_headers)
+                repo_tags = json.loads(repo_tags_response.text)
+                version = [obj['name'] for obj in repo_tags if obj['commit']['sha'] == merge_commit_sha][0]
+
+                print(f"   {pr['url']}")
+                print(f"   - raises [{extract_org_repo(pr['url'])}](https://github.com/{extract_org_repo(pr['url'])})"
+                      f" to release tag [{version}](https://github.com/{extract_org_repo(pr['url'])}/releases/tag/{version})")
+
+
+if __name__ == '__main__':
+    release()
