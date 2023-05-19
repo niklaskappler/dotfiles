@@ -16,6 +16,7 @@ tap "homebrew/cask"
 brew "jq"
 brew "autojump"
 brew "qrencode"
+brew "openssl@3"
 
 ##########################################
 # Essential GUI
