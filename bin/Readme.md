@@ -5,6 +5,7 @@
 
 - `activetask` - A little script for showing a shorthand way of current timewarrior tracking.
 - `battery-status`
+- `capture` - Helper to download live streams with youtube-dl and ffmpeg
 - `container-ip`
 - `current-week`
 - `get-nexus-docker-tags` - Retrieves docker image tags form nexus repository for a given query

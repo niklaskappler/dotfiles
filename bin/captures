@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# Captures an live-stream with youtube-dl and ffmpeg
+#
+# Originally from https://gist.github.com/sixteenmillimeter/d6443c6b18a7d143b3695dd9d79c3c22
+
+#################################
+# Instructions
+#
+# First, install ffmpeg and youtube-dl
+#
+# https://ffmpeg.org/download.html
+# https://ytdl-org.github.io/youtube-dl/download.html
+#
+# To capture a stream at https://yoururl and save to a dated, named TS file:
+#
+# bash capture.sh https://yoururl streamfilename
+#
+# Will create file streamfile_STARTDATE.ts and streamfilename.txt containing stream metadata.
+#
+# To capture stream and convert to an MKV file after:
+#
+# bash capture.sh https://streamurl streamfilename "convert"
+#
+# Will create TS file and streamfile_STARTDATE_to_FINISHDATE.mkv after capture complete.
+#
+# Note: Since this is capturing from a M3U8 stream you may end up retrieving more of earlier
+#       parts of the stream than the metadata will indicate. This will depend on the service
+#       you are capturing from.
+#################################
+
+THREADS="1" #set number of threads for process or comment out to utilize 100% of CPU
+QUALITY=-1 #-2 for second best, -1 for best
+
+INPUT="${1}"
+OUTPUT="${2}" # filepath without extension
+
+if [ "${OUTPUT}" == "" ]; then
+	OUTPUT=`basename "${INPUT}"`
+fi
+
+if [ "${THREADS}" == "" ]; then
+	THREADS_ARG=""
+else
+	THREADS_ARG="-threads ${THREADS}"
+fi
+
+METADATA="${OUTPUT}.txt"
+FORMATS=`mktemp`
+
+youtube-dl --list-formats "${INPUT}" > "${FORMATS}"
+
+FORMAT_FULL=`tail ${QUALITY} "${FORMATS}" | head -1`
+FORMAT=`echo "${FORMAT_FULL}" | awk -F" " '{print $1}'`
+M3U8=`youtube-dl -f "${FORMAT}" -g "${INPUT}"`
+STARTED=`date "+%F-%T-%Z"`
+OUTPUT_TS="${OUTPUT}_${STARTED}.ts"
+
+echo "Stream:  ${INPUT}"
+echo "Format:  ${FORMAT_FULL}"
+echo "Output:  ${OUTPUT_TS}"
+
+if [ -f "${METADATA}" ]; then
+	echo " " >> "${METADATA}"
+else
+	echo "==========================" > "${METADATA}"
+	echo " " >> "${METADATA}"
+fi
+
+echo "Stream  : ${INPUT}" >> "${METADATA}"
+echo "M3U8    : ${M3U8}" >> "${METADATA}"
+echo "Format  : ${FORMAT_FULL}" >> "${METADATA}"
+echo "Output  : ${OUTPUT_TS}" >> "${METADATA}"
+echo "Started : ${STARTED}" >> "${METADATA}"
+
+echo "Starting capture, press 'q' to finish"
+
+# capture with no console output
+ffmpeg -i "${M3U8}" -loglevel warning -hide_banner ${THREADS_ARG} -c copy "${OUTPUT_TS}"
+# press q to finish capturing stream
+
+FINISHED=`date "+%F-%T-%Z"`
+echo "Finished capturing at ${FINISHED}"
+echo "Finished : ${FINISHED}" >> "${METADATA}"
+
+if [ "${3}" == "convert" ]; then
+	OUTPUT_MKV="${OUTPUT}_${STARTED}_to_${FINISHED}.mkv"
+	echo "Creating MKV file ${OUTPUT_MKV}..."
+	ffmpeg -i "${OUTPUT_TS}" -loglevel warning -hide_banner ${THREADS_ARG} -map 0 -c copy "${OUTPUT_MKV}"
+	echo "Created ${OUTPUT_MKV}"
+	echo "MKV      : ${OUTPUT_MKV}" >> "${METADATA}"
+fi
+
+echo " " >> "${METADATA}"
+echo "==========================" >> "${METADATA}"
+echo "Cleaning up..."
+# cleanup
+rm -f "${FORMATS}"
+
+echo "Completed capturing ${INPUT}"
