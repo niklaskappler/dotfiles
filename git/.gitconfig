@@ -3,6 +3,12 @@
 	email = mail@niklas-kappler.de
 	signingKey = 9E0D5D04
 
+# [includeIf "gitdir:/Users/niklaskappler/Projects/niklaskappler/"]
+#     path = /Users/niklaskappler/Projects/niklaskappler/.gitconfig
+#
+# [url "github-work:niklaskappler/"]
+#     insteadOf = git@github.com:niklaskappler/
+
 [github]
   user = niklaskappler
 
