@@ -4,7 +4,8 @@
 #
 # Originally from https://stackoverflow.com/questions/4029471/how-to-you-toggle-on-and-off-a-web-proxy-in-os-x-from-the-command-line
 # TODO: dynamically choose the correct network device
-NETWORK_DEVICE='USB 10/100/1000 LAN 2'
+#NETWORK_DEVICE='USB 10/100/1000 LAN 2'
+NETWORK_DEVICE='Wi-Fi'
 e=$(networksetup -getsecurewebproxy "${NETWORK_DEVICE}" | grep "No")
 
 echo $e
