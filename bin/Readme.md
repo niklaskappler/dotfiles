@@ -7,10 +7,12 @@
 - `battery-status`
 - `container-ip`
 - `current-week`
+- `get-nexus-docker-tags` - Retrieves docker image tags form nexus repository for a given query
 - `git-open`
 - `git-undo`
 - `import-github-pgp`
 - `jira-search`
+- `live-pr-descr` - Create live pr descriptions form jira releases incl. all related GitHub PRs
 - `mov2gif` - Converts a mov video to a GIF file. 
 - `port-info`
 - `prox` - Handy shorthand command to toggle proxy settings on MacOS network interfaces.  

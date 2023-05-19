@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#
+# live-pr-descr --host "https://jira.host.com" --project OL --cookie <jira cookie> --github_token="$(gh auth token)"
+
+import json
+
+import click
+import requests
+
+@click.command()
+@click.option('--branch', default='', help='The branch name you are looking for?')
+@click.option('--host', default='', help='Nexus host address')
+@click.option('--verbose', default='', help='Show additional informaition about docker tag')
+def get_nexus_docker_tags(branch, host, verbose):
+
+    nexus_payload_response = requests.get(f"{host}/service/rest/v1/search?repository=docker-public&keyword=\"{branch}\"")
+    nexus_payload = json.loads(nexus_payload_response.text)
+
+    modules = list(dict.fromkeys([obj['name'] for obj in nexus_payload['items']]))
+
+    for module in modules:
+        print(f"\nModule: {module}")
+        for release_tag in [release_tag for release_tag in nexus_payload['items'] if release_tag['name'] == module]:
+            print(f" - {release_tag['version']}")
+
+    print(f"\n")
+
+if __name__ == '__main__':
+    get_nexus_docker_tags()
