@@ -17,11 +17,11 @@ sudo chsh -s $(which zsh)
 ### Install
 - Clone onto your machine:
 ```bash
-git clone git://github.com/niklaskappler/dotfiles.git
+git clone git://github.com/niklaskappler/dotfiles.git ~/.dotfiles
 ```
 - Install the dotfiles:
 ```bash
-sh ./dotfiles/install.sh
+~/.dotfiles/install.sh
 ```
 Restart your computer and enjoy your new configuration! ✌🏻
 
@@ -35,3 +35,6 @@ Restart your computer and enjoy your new configuration! ✌🏻
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Misc
+- https://apple.stackexchange.com/questions/193411/update-bash-to-version-4-0-on-osx
