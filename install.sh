@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/zsh
 
 CONFIG_DIR=$(dirname "$0")
-echo "🔧 Setting up your Mac..."
+echo "🔧 Setting up your Mac...\n"
 
 # Check for Homebrew and install if we don't have it
 if test ! $(which brew); then
@@ -9,26 +9,27 @@ if test ! $(which brew); then
 fi
 
 echo "📲 Installing homebrew/app store packages..."
-sh $CONFIG_DIR/osx/brew/brew_setup.sh
-echo "✅ Successful installed packages"
+#sh $CONFIG_DIR/osx/brew/brew_setup.sh
+echo "✅ Successful installed packages\n"
 
 echo "📲 Installing oh-my-zsh package..."
-sh $CONFIG_DIR/osx/brew/install-oh-my-zsh.sh
-sh $CONFIG_DIR/osx/brew/install-omz-plugins.sh
-echo "✅ Successful installed oh-my-zsh"
+sh $CONFIG_DIR/osx/install-oh-my-zsh.sh
+sh $CONFIG_DIR/osx/install-omz-plugins.sh
+sh $CONFIG_DIR/osx/install-oh-my-zsh-theme.sh
+echo "✅ Successful installed oh-my-zsh\n"
 
 echo "📁 Creating projects directory..."
 sh $CONFIG_DIR/osx/create_projects.sh
-echo "✅ Successful created projects directory"
+echo "✅ Successful created projects directory\n"
 
 echo "🔗 Linking configuration files..."
 sh $CONFIG_DIR/osx/symlink.sh
-echo "✅ Successful linked configuration files"
+echo "✅ Successful linked configuration files\n"
 
 # Install configurations from zsh
 echo "🔧 Setting configuration to iTerm2 and zsh..."
 source $HOME/.zshrc
-echo "✅ Successful configured iTerm2 and zsh"
+echo "✅ Successful configured iTerm2 and zsh\n"
 
 echo "⚡️ All right! Restart your machine to complete the configuration."
 
