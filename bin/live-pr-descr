@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 #
-# live-pr-descr --host "https://jira.host.com" --project OL --cookie <jira cookie> --github_token="$(gh auth token)"
+# live-pr-descr --host "https://jira.host.com" --project OL --cookie <jira JSESSIONID cookie> --github_token="$(gh auth token)"
 
 import json
 
@@ -57,20 +57,28 @@ def release(release, project, host, cookie, github_token):
 
         for pr in jira_github_prs['detail'][0]['pullRequests']:
             if "bp.infra.deployment" not in pr['url']:
-                github_headers = {'Authorization': f'Bearer {github_token}', 'Accept': 'application/vnd.github+json'}
+                print(f"   - {pr['url']}")
+                github_headers = {'Authorization': f'Bearer {github_token}',
+                                  'Accept': 'application/vnd.github+json'}
                 url = f"https://api.github.com/repos/{extract_org_repo(pr['url'])}/pulls/{extract_pull_number(pr['url'])}"
                 github_pr_details_response = requests.get(url, headers=github_headers)
                 github_pr_details = json.loads(github_pr_details_response.text)
                 merge_commit_sha = github_pr_details['merge_commit_sha']
 
-                url = f"https://api.github.com/repos/{extract_org_repo(pr['url'])}/tags"
-                repo_tags_response = requests.get(url, headers=github_headers)
-                repo_tags = json.loads(repo_tags_response.text)
-                version = [obj['name'] for obj in repo_tags if obj['commit']['sha'] == merge_commit_sha][0]
+                if not merge_commit_sha and pr['status'] == 'OPEN':
+                    print(f"     has still open PRs")
+                else:
+                    url = f"https://api.github.com/repos/{extract_org_repo(pr['url'])}/tags"
+                    repo_tags_response = requests.get(url, headers=github_headers)
+                    repo_tags = json.loads(repo_tags_response.text)
+                    filtered_version_tags = [obj['name'] for obj in repo_tags if
+                                             obj['commit']['sha'] == merge_commit_sha]
 
-                print(f"   {pr['url']}")
-                print(f"   - raises [{extract_org_repo(pr['url'])}](https://github.com/{extract_org_repo(pr['url'])})"
-                      f" to release tag [{version}](https://github.com/{extract_org_repo(pr['url'])}/releases/tag/{version})")
+                    if len(filtered_version_tags) >= 1:
+                        version = filtered_version_tags[0]
+                        print(
+                            f"     raises [{extract_org_repo(pr['url'])}](https://github.com/{extract_org_repo(pr['url'])})"
+                            f" to release tag [{version}](https://github.com/{extract_org_repo(pr['url'])}/releases/tag/{version})")
 
 
 if __name__ == '__main__':
