@@ -31,7 +31,7 @@ cask "the-unarchiver"
 cask "appcleaner"
 cask "veracrypt"
 cask "google-chrome"
-cask "spotify"
+#cask "spotify"
 cask "macpass"
 cask "osxfuse"
 cask "jiggler"
@@ -48,9 +48,9 @@ brew "nvm"
 cask "jetbrains-toolbox"
 cask "visual-studio-code"
 cask "docker"
-cask "postman"
+cask "insomnia"
 cask "keybase"
-cask cyberduck
+cask "cyberduck"
 
 ##########################################
 # Work CLI
