@@ -3,13 +3,17 @@
 CONFIG_DIR=$(dirname "$0")
 echo "🔧 Setting up your Mac...\n"
 
+echo "🎨 Setting MacOS preferences..."
+sh $CONFIG_DIR/osx/setup-macos.sh
+echo "✅ Successful set macOS preferences\n"
+
 # Check for Homebrew and install if we don't have it
 if test ! $(which brew); then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 echo "📲 Installing homebrew/app store packages..."
-#sh $CONFIG_DIR/osx/brew/brew_setup.sh
+sh $CONFIG_DIR/osx/brew/brew_setup.sh
 echo "✅ Successful installed packages\n"
 
 echo "📲 Installing oh-my-zsh package..."
